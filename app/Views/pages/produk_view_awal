@@ -1,0 +1,112 @@
+
+<!-- <form action="" method="post" enctype="multipart/form-data" id="form_produk"> -->
+ <form action="" method="POST" enctype="multipart/form-data" id="form_produk"> 
+    <label for="nama_produk">Nama Produk</label>
+            <input type="text" name="nama_produk" id="nama_produk" 
+            value="">
+       <br>
+      
+         <label for="kategori">kategori</label>
+         <select name="kategori" id="kategori">
+           <option value="">-->Pilih Kategori<--</option>
+         </select>
+         <br>
+      
+         <label for="gambar">Gambar</label>
+         <input type="file" name="gambar"  >
+       
+         <br>
+         <label for="harga">Harga</label>
+         <input type="number" name="harga" value="">
+       
+        <br>      
+         <input type="submit" value="simpan" id="">
+       
+</form>
+
+<hr>
+
+<h1 class="mt-4">Master Produk</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">
+        <?php 
+        echo anchor('/',"Dashboard");
+         ?>
+    </li>
+    <li class="breadcrumb-item active">Produk</li>
+</ol>
+<div style="padding-bottom: 15px;">
+    <button id="btn_reload" class="btn btn-primary">Reload</button>
+    <button id="btn_add_new" class="btn btn-success">Add New Produk</button>
+</div>
+
+<table id="produk_tbl" class="dark-table" style="width:100%">
+    <thead>
+        <tr>
+            <th>Gambar</th>
+            <th>Nama Produk</th>
+            <th>Kategori</th>
+            <th>Harga</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Gambar</th>
+            <th>Nama Produk</th>
+            <th>Kategori</th>
+            <th>Harga</th>
+            <th>Action</th>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+$(document).ready(function() {
+//  Tampilkan Data Tabel
+    var tbl_produk= $('#produk_tbl').DataTable( {
+        "ajax": "<?php echo site_url('/api/produk') ?>",
+        "columns":[
+            {   "data" : null,
+                "render": function ( data, type, full, meta ) {
+                    if(data.gambar)
+                        return "<img src='"+data.gambar+"' class='avatar' width='30px'/>"
+                    else
+                        return "-"
+                }
+            },
+            { "data" : "nama_produk" },
+            { "data" : "kategori.nama_kategori" },
+            { "data" : "harga" },
+            { "data" : null, defaultContent: '<button class="btn btn-warning btn-edit btn-sm"><i class="fa fa-pencil"></i> Edit </button> <button class="btn btn-delete btn-danger btn-sm"><i class="fa fa-trash"></i> delete </button>' },
+        ]
+    });
+//  delete dan Edit 
+    $("#produk_tbl").on('click','tr button', function() {
+        let editBtn = $(this).hasClass('btn-edit')
+        let deletBtn = $(this).hasClass('btn-delete')
+        let data = tbl_produk.row($(this).parents('tr') ).data();
+// Edit 
+        if(editBtn){
+            alert("ini action on edit")
+        }
+// Delete
+        if(deletBtn){
+            $.ajax({
+                url:"<?php echo site_url('/api/produk/delete/') ?>"+data.id,
+                method:"POST",
+                data:{},
+                success:function(data){
+                    tbl_produk.ajax.reload();
+
+                }
+            })
+            alert("deleted successfully")
+        }
+    });
+
+    // simpan data
+    
+});
+</script>
+

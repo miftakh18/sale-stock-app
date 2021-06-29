@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Controllers\BaseController;
+
+class ProdukController extends BaseController
+{
+	public function __construct()
+	{
+		$this->produk = new \App\Models\ProdukModel();	
+	}
+	public function index()
+	{
+	
+		$data['page'] = 'pages/produk_view';
+		$data['produk_data'] = $this->produk->findAll();
+		return view('main', $data);
+	}
+	 public function ambil_data () // fungsi untuk Ngambil Semua data
+	 {
+		$data = $this->produk->findAll();
+		return $this ->response->setJSON(['data'=>$data]);
+	 }
+
+	 //fungsi menambahkan data
+	 public function tambah_data()
+	{
+		$input 	= $this->request->getPost();
+		
+		
+		// try{
+		// 	$gambar = $this->request->getFile('gambar');
+		// 	$file_name = $gambar->getRandomName();
+		// 	$file_path = 'uploads';
+		// 	$gambar->move("./".$file_path,$file_name);
+		// 	$input['gambar'] = base_url()."/".$file_path."/".$file_name;
+		// }catch(\Exception $e){}
+		if ($this->produk->save($input) === false)
+		{
+			return  $this->response->setStatusCode(422)
+				->setJSON([$this->produk->errors()]);
+		}else
+			return $this->response->setJSON(["message"=>"data berhasil di tambahkan"]);
+	}
+// function menghapus data 
+	public function hapus_data($id)
+	{
+		$this->produk->delete($id);
+		return $this->response->setJSON(["message"=>"data berhasil di hapus"]);
+	}
+	// function tampilkan data
+	public function lihat_data($id)
+	{
+		$this->produk->find($id);
+		
+		$data['produk'] = $this->produk->find($id);
+		$data['produk_data'] = $this->produk->findAll();
+		$data['page'] = 'pages/produk_view';
+		return view('main', $data);
+		// $data = $this->produk->find($id);
+		// return $this->response->setJSON($data);
+		
+	}
+	//function update data/ganti data
+	public function ganti_data($id)
+	{
+		$input 	= $this->request->getPost();
+		$this->produk->update($id, $input);
+		return redirect()->to('/produk');
+		// $input["id"] = $id;
+		// $input = $this->request->getPost();
+		// // try{
+		// // 	$gambar = $this->request->getFile('gambar');
+		// // 	$file_name = $gambar->getRandomName();
+		// // 	$file_path = 'uploads';
+		// // 	$gambar->move("./".$file_path,$file_name);
+		// // 	$input['gambar'] = base_url()."/".$file_path."/".$file_name;
+		// // }catch(\Exception $e){}
+
+		// if ($this->produk->save($input) === false)
+		// {
+		// 	return  $this->response->setStatusCode(422)
+		// 		->setJSON([$this->produk->errors()]);
+		// }else
+		// 	return $this->response->setJSON(["message"=>"data berhasil di perbharui"]);
+		
+	}
+	
+}
+
