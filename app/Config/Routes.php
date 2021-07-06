@@ -41,11 +41,6 @@ $routes->group('', ['filter' => 'web', 'namespace' => 'App\Controllers'], functi
 	$routes->get('/', 'Home::index');
 	$routes->get('/produk', 'Produkcontorller::index');
 	$routes->get('/kategori', 'KategoriController::index');
-<<<<<<< HEAD
-=======
-	$routes->get('/pesanan','PesananController::index');
-	
->>>>>>> 03836c10739c3e79a9c95bc3ef9d43ce516656a6
 });
 
 $routes->group('auth', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -54,16 +49,9 @@ $routes->group('auth', ['namespace' => 'App\Controllers'], function ($routes) {
 	$routes->get('logout', 'LoginController::logout');
 });
 
-<<<<<<< HEAD
 $routes->group('api', ['filter' => 'auth', 'namespace' => 'App\Controllers'], function ($routes) {
 	$routes->resource('produk', ['controller' => 'Produkcontorller', 'except' => 'new,edit']);
 	$routes->resource('kategori', ['controller' => 'KategoriController', 'except' => 'new,edit']);
-=======
-$routes->group('api', ['filter'=>'auth', 'namespace' => 'App\Controllers'], function($routes){
-	$routes->resource('produk',['controller' =>'Produkcontorller', 'except' => 'new,edit']);
-	$routes->resource('kategori',['controller' =>'KategoriController', 'except' => 'new,edit']);
-	$routes->resource('pesanan',['controller' =>'PesananController', 'except' => 'new,edit']);
->>>>>>> 03836c10739c3e79a9c95bc3ef9d43ce516656a6
 
 	$routes->get('getcmb-produk', 'KategoriController::cmbKategori');
 });
