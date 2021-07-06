@@ -11,16 +11,16 @@ use Exception;
 
 class LoginController extends BaseController
 {
-	public function index()
-	{
+    public function index()
+    {
         $session = \Config\Services::session();
-        if($session->get('access_token') !=''){
-			return redirect()->to('/');
-		}else
-		    return view('login_form');
-	}
+        if ($session->get('access_token') != '') {
+            return redirect()->to('/');
+        } else
+            return view('login_form');
+    }
 
-	public function register()
+    public function register()
     {
         $rules = [
             'name' => 'required',
@@ -28,7 +28,7 @@ class LoginController extends BaseController
             'password' => 'required|min_length[8]|max_length[255]'
         ];
 
- 		$input = $this->getRequestInput($this->request);
+        $input = $this->getRequestInput($this->request);
         if (!$this->validateRequest($input, $rules)) {
             return $this
                 ->getResponse(
@@ -39,15 +39,14 @@ class LoginController extends BaseController
 
         $userModel = new Users();
         $userModel->save($input);
-     
 
-       
+
+
 
         return $this->getJWTForUser(
             $input['email'],
             ResponseInterface::HTTP_CREATED
         );
-
     }
 
     /**
@@ -67,7 +66,7 @@ class LoginController extends BaseController
             ]
         ];
 
-		$input = $this->getRequestInput($this->request);
+        $input = $this->getRequestInput($this->request);
 
 
         if (!$this->validateRequest($input, $rules, $errors)) {
@@ -77,12 +76,11 @@ class LoginController extends BaseController
                     ResponseInterface::HTTP_BAD_REQUEST
                 );
         }
-       return $this->getJWTForUser($input['email']);
-
-       
+        return $this->getJWTForUser($input['email']);
     }
 
-    public function logout(){
+    public function logout()
+    {
         $session = \Config\Services::session();
         $session->destroy();
         return redirect()->to('/login');
@@ -91,8 +89,7 @@ class LoginController extends BaseController
     private function getJWTForUser(
         string $emailAddress,
         int $responseCode = ResponseInterface::HTTP_OK
-    )
-    {
+    ) {
         try {
             $model = new Users();
             $user = $model->findUserByEmailAddress($emailAddress);
@@ -106,9 +103,9 @@ class LoginController extends BaseController
                 'user'  =>  $user,
                 'access_token'     => $aksesToken
             ];
-            
+
             $session->set($newdata);
-            
+
             return $this
                 ->getResponse(
                     [

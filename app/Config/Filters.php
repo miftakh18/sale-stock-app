@@ -67,13 +67,13 @@ class Filters extends BaseConfig
 			'before' => [
 				'client/*',
 				'client'
-		  	],
+			],
 		],
 		'web' => [
 			'before' => [
 				'client/*',
 				'client'
-		  	],
+			],
 		]
 	];
 }

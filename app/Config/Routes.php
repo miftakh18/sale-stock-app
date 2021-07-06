@@ -9,8 +9,7 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
-{
+if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
 	require SYSTEMPATH . 'Config/Routes.php';
 }
 
@@ -37,24 +36,22 @@ $routes->setAutoRoute(false);
 //$routes->get('/', 'Home::index');
 
 $routes->get('/login', 'LoginController::index');
-$routes->group('', [ 'filter'=>'web', 'namespace' => 'App\Controllers'], function($routes){
-	
+$routes->group('', ['filter' => 'web', 'namespace' => 'App\Controllers'], function ($routes) {
+
 	$routes->get('/', 'Home::index');
 	$routes->get('/produk', 'Produkcontorller::index');
 	$routes->get('/kategori', 'KategoriController::index');
-	
 });
 
-$routes->group('auth', ['namespace' => 'App\Controllers'], function($routes)
-{
-    $routes->post('register', 'LoginController::register');
-    $routes->post('login', 'LoginController::login');
-    $routes->get('logout', 'LoginController::logout');
+$routes->group('auth', ['namespace' => 'App\Controllers'], function ($routes) {
+	$routes->post('register', 'LoginController::register');
+	$routes->post('login', 'LoginController::login');
+	$routes->get('logout', 'LoginController::logout');
 });
 
-$routes->group('api', ['filter'=>'auth', 'namespace' => 'App\Controllers'], function($routes){
-	$routes->resource('produk',['controller' =>'Produkcontorller', 'except' => 'new,edit']);
-	$routes->resource('kategori',['controller' =>'KategoriController', 'except' => 'new,edit']);
+$routes->group('api', ['filter' => 'auth', 'namespace' => 'App\Controllers'], function ($routes) {
+	$routes->resource('produk', ['controller' => 'Produkcontorller', 'except' => 'new,edit']);
+	$routes->resource('kategori', ['controller' => 'KategoriController', 'except' => 'new,edit']);
 
 	$routes->get('getcmb-produk', 'KategoriController::cmbKategori');
 });
@@ -71,7 +68,6 @@ $routes->group('api', ['filter'=>'auth', 'namespace' => 'App\Controllers'], func
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

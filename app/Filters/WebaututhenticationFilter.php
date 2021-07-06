@@ -26,7 +26,7 @@ class WebaututhenticationFilter implements FilterInterface
 	public function before(RequestInterface $request, $arguments = null)
 	{
 		$session = \Config\Services::session();
-		if($session->get('access_token') ==''){
+		if ($session->get('access_token') == '') {
 			return redirect()->to('/login');
 		}
 	}
